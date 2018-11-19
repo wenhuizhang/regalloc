@@ -37,7 +37,7 @@ main (int argc, char **argv)
   int result;
 
  
-  usage();
+  //usage();
 
   while ((c = getopt (argc, argv, "o:f:k:")) != -1)
     switch (c)
@@ -58,6 +58,10 @@ main (int argc, char **argv)
         break;
       case 'k':
         regnum = atoi(optarg);
+        if(regnum < 3){
+            printf("Register number size should be >= 3\n");
+            return 0;
+        }
         break;
       default:
         usage();

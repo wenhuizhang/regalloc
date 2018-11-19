@@ -11,9 +11,7 @@ regalloc: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 test:
-	echo "test: regalloc -o 1 -f filename.txt -k 9"
 	./regalloc -o 1 -f filename.txt -k 9
-	echo "test: regalloc -o 2 -f filename.txt -k 9"
 	./regalloc -o 2 -f filename.txt -k 9
 
 .PHONY: clean
