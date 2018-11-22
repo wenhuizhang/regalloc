@@ -66,7 +66,7 @@ for i in range(len(lines) -1):
 print global_file
 
 
-with open('pass.txt', 'w') as f:
+with open('pass1.txt', 'w') as f:
     for item in global_file:
         for chars in item:
             f.write("%s\t" % chars)

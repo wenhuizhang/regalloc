@@ -32,8 +32,8 @@ main (int argc, char **argv)
 {
   int tflag = 0;
   int bflag = 0;
-  char *fvalue = NULL;
-  char *p1value = "pass1.txt";
+  char *fvalue = "pass1.txt";
+  char *p1value = "pass2.txt";
   int regnum = 0;
   int c;
   int result;
@@ -41,6 +41,7 @@ main (int argc, char **argv)
  
 
   //usage();
+  printf ("Usage: regalloc -o [1,2] -f filename.txt -k [0-9]*\n");
 
   while ((c = getopt (argc, argv, "o:f:k:")) != -1)
     switch (c)

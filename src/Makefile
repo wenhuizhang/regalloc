@@ -11,6 +11,7 @@ regalloc: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 test:
+	python ./parser.py
 	./regalloc -o 1 -f filename.txt -k 9
 	./regalloc -o 2 -f filename.txt -k 9
 
