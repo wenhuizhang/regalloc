@@ -12,6 +12,7 @@
 #include "topdown.c"
 #include "bottomup.c"
 
+
 void 
 usage(void)
 {
@@ -32,11 +33,13 @@ main (int argc, char **argv)
   int tflag = 0;
   int bflag = 0;
   char *fvalue = NULL;
+  char *p1value = "pass1.txt";
   int regnum = 0;
   int c;
   int result;
 
  
+
   //usage();
 
   while ((c = getopt (argc, argv, "o:f:k:")) != -1)
@@ -70,15 +73,6 @@ main (int argc, char **argv)
 
   printf ("tflag = %d, bflag = %d, fvalue = %s, register number = %d\n", tflag, bflag, fvalue, regnum);
 
-
-  FILE* fp;
-  char buffer[255];
-  fp = fopen(file, "r");
-
-  while(fgets(buffer, 255, (FILE*) fp)){
-      printf("%s\n", buffer);
-  }
-  fclose(fp);
 
   if(tflag == 1)
     result = topdown(fvalue, regnum);
