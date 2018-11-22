@@ -70,6 +70,8 @@ main (int argc, char **argv)
 
   printf ("tflag = %d, bflag = %d, fvalue = %s, register number = %d\n", tflag, bflag, fvalue, regnum);
 
+
+
   if(tflag == 1)
     result = topdown(fvalue, regnum);
   if(bflag == 1)

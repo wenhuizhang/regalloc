@@ -1,3 +1,15 @@
+/*bottom up:
+ * Focus on replacement rather than allocation
+ * Keep values “used soon” in registers
+ * Only parts of a live range may be assigned to a physical register
+ *
+ * algorithm:
+ * Start with empty register set
+ * Load on demand
+ * When no register is available, free one
+ */
+
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
