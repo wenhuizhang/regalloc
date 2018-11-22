@@ -71,6 +71,14 @@ main (int argc, char **argv)
   printf ("tflag = %d, bflag = %d, fvalue = %s, register number = %d\n", tflag, bflag, fvalue, regnum);
 
 
+  FILE* fp;
+  char buffer[255];
+  fp = fopen(file, "r");
+
+  while(fgets(buffer, 255, (FILE*) fp)){
+      printf("%s\n", buffer);
+  }
+  fclose(fp);
 
   if(tflag == 1)
     result = topdown(fvalue, regnum);
