@@ -32,8 +32,8 @@ main (int argc, char **argv)
 {
   int tflag = 0;
   int bflag = 0;
-  char *fvalue = "pass1.txt";
-  char *p1value = "pass2.txt";
+  char *fvalue = "pass2.txt";
+  char *p1value = "pass3.txt";
   int regnum = 0;
   int c;
   int result;

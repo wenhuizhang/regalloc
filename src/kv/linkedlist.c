@@ -124,6 +124,23 @@ ll_print(struct ll *list, void(*print_node)(struct ll_node*))
         printf("\n");
 }
 
+// used for register allocation
+void
+ll_print_node(struct ll *list)
+{
+        printf("Total %d Var Allocated: ", list->size);
+
+        struct ll_node *node = list->head;
+
+        while(node) {
+                printf("%s", node->data);
+                printf("->");
+                node = node->next;
+        }
+
+        //printf("\n");
+}
+
 void
 ll_remove(struct ll *list, struct ll_node *node)
 {

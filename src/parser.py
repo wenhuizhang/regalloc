@@ -71,3 +71,12 @@ with open('pass1.txt', 'w') as f:
         for chars in item:
             f.write("%s\t" % chars)
         f.write("\n")
+
+with open('pass2.txt', 'w') as f:
+    for item in global_file:
+        f.write("%s\n" % item[2])
+        f.write("%s\n" % item[3])
+        f.write("%s\n" % item[1])
+
+
+

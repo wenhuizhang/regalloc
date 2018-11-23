@@ -49,6 +49,7 @@ struct ll_node *ll_last(struct ll *list);
 struct ll_node *ll_last_peek(struct ll *list);
 
 void ll_print(struct ll*, void(*print_node)(struct ll_node*));
+void ll_print_node(struct ll *list);
 
 // remove a node from the list
 // DOES NOT FREE THE NODE

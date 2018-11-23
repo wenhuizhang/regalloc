@@ -12,8 +12,8 @@ regalloc: $(OBJ)
 
 test:
 	python ./parser.py
-	./regalloc -o 1 -f pass1.txt -k 9
-	./regalloc -o 2 -f pass1.txt -k 9
+	./regalloc -o 1 -f pass2.txt -k 9
+	./regalloc -o 2 -f pass2.txt -k 9
 
 .PHONY: clean
 
