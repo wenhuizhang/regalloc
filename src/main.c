@@ -71,10 +71,8 @@ main (int argc, char **argv)
   printf ("tflag = %d, bflag = %d, fvalue = %s, reg_num_file= %s\n", tflag, bflag, fvalue, pvalue);
 
 
-  if(tflag == 1)
-    result = topdown("pass3.txt", "K.txt");
-  if(bflag == 1)
-    result = bottomup(fvalue, pvalue);
+  result = topdown("pass3.txt", "K.txt");
+  result = bottomup(fvalue, pvalue);
 
   return 0;
 }
