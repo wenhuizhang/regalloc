@@ -1,0 +1,24 @@
+load r0	v51
+load r1	v2
+load r1	v101
+load r0	v1
+load r0	v54
+load r1	v5
+load r1	v7
+Op	r0	r1	r1	
+load r2	v4
+Op	r2	r0	r2	
+store r2	v3
+store r2	v4
+Op	r0	r1	r1	
+load r2	v6
+load r2	v3
+Op	r1	r2	r2	
+store r2	v6
+store r2	v3
+Op	r1	r0	r0	
+load r2	v6
+load r2	v4
+Op	r0	r2	r2	
+store r2	v6
+store r2	v4
