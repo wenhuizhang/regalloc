@@ -6,18 +6,28 @@
 
 
 int 
-topdown(char *file, int regnum){
-    printf ("This is naive topdown register allocation for:\n");
-    printf ("fvalue = %s, register number = %d\n", file, regnum);
+topdown(char *file, char *k_file){
+    printf ("This is topdown register allocation with graph coloring:\n");
     
     FILE* fp;
     char buffer[255];
     fp = fopen(file, "r");
 
+    printf("rewritted functions\n");
     while(fgets(buffer, 255, (FILE*) fp)){
         printf("%s\n", buffer);
     }
 
     fclose(fp);
-    return 1;
+    
+    fp = fopen("alloc_var.txt", "r");
+
+    printf("allocated registers\n");
+    while(fgets(buffer, 255, (FILE*) fp)){
+        printf("%s\n", buffer);
+    }
+
+    fclose(fp);
+    
+    return 0;
 };

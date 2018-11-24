@@ -1,24 +1,19 @@
-load r0	v51
-load r1	v2
-load r1	v101
-load r0	v1
-load r0	v54
-load r1	v5
-load r1	v7
-Op	r0	r1	r1	
-load r2	v4
-Op	r2	r0	r2	
-store r2	v3
-store r2	v4
-Op	r0	r1	r1	
-load r2	v6
-load r2	v3
-Op	r1	r2	r2	
-store r2	v6
-store r2	v3
-Op	r1	r0	r0	
-load r2	v6
-load r2	v4
-Op	r0	r2	r2	
-store r2	v6
-store r2	v4
+load r1		v2
+Op	r0	r1	r1
+store r0	v1
+load r0		v1
+load r2		v4
+Op	r3	r0	r2
+store r3	v3
+load r1		v5
+Op	r0	r1	r1
+store r0	v1
+load r3		v6
+load r2		v3
+Op	r1	r3	r2
+store r1	v7
+load r0		v1
+Op	r1	r0	r0
+store r1	v1
+Op	r0	r3	r2
+store r0	v4

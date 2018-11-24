@@ -18,9 +18,8 @@
 
 
 int 
-bottomup(char *file, int regnum){
+bottomup(char *file, char *k_file){
     printf ("This is bottomup register allocation for:\n");
-    printf ("fvalue = %s, register number = %d\n", file, regnum);
     
     FILE* fp;
     char buffer[255];

@@ -16,7 +16,7 @@
 void 
 usage(void)
 {
-  printf ("Usage: regalloc -o [1,2] -f filename.txt -k [0-9]*\n");
+  printf ("Usage: regalloc -o [1,2] -f filename.txt -k K.txt\n");
   printf (" Please choose from the following options for o:\n");
   printf ("     1. top down register allocation\n");
   printf ("     2. bottowm up register allocation\n");
@@ -32,8 +32,8 @@ main (int argc, char **argv)
 {
   int tflag = 0;
   int bflag = 0;
-  char *fvalue = "pass2.txt";
-  char *p1value = "pass3.txt";
+  char *fvalue = "filename.txt";
+  char *pvalue = "K.txt";
   int regnum = 0;
   int c;
   int result;
@@ -41,7 +41,7 @@ main (int argc, char **argv)
  
 
   //usage();
-  printf ("Usage: regalloc -o [1,2] -f filename.txt -k [0-9]*\n");
+  printf ("Usage: regalloc -o [1,2] -f filename.txt -k K.txt\n");
 
   while ((c = getopt (argc, argv, "o:f:k:")) != -1)
     switch (c)
@@ -61,24 +61,20 @@ main (int argc, char **argv)
         fvalue = optarg;
         break;
       case 'k':
-        regnum = atoi(optarg);
-        if(regnum < 3){
-            printf("Register number size should be >= 3\n");
-            return 0;
-        }
+        pvalue = optarg;
         break;
       default:
         usage();
         break;
       }
 
-  printf ("tflag = %d, bflag = %d, fvalue = %s, register number = %d\n", tflag, bflag, fvalue, regnum);
+  printf ("tflag = %d, bflag = %d, fvalue = %s, reg_num_file= %s\n", tflag, bflag, fvalue, pvalue);
 
 
   if(tflag == 1)
-    result = topdown(fvalue, regnum);
+    result = topdown("pass3.txt", "K.txt");
   if(bflag == 1)
-    result = bottomup(fvalue, regnum);
+    result = bottomup(fvalue, pvalue);
 
   return 0;
 }

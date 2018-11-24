@@ -7,19 +7,18 @@
 import re
 import sys
 import numpy as np
+import os
+import string
+import fileinput
 
 text_file = open ( 'filename.txt' , 'r')
-
 lines = text_file.read().split('\n')
-
 print len(lines)
 
 
 # Creates a list containing len(lines) -1  lists, each of 4 items, all set to 0
 w, h = 4, (len(lines) -1);
 global_file = [[0 for x in range(w)] for y in range(h)] 
-
-
 
 
 for i in range(len(lines) -1):
@@ -178,56 +177,116 @@ else:
     print keys_deleted # these ones alternatively use the Kth register for load and store
     # print new_graph
     register_map = color_nodes(new_graph, K-2)
-    for items in keys_deleted:
-        register_map[items] = K-1
+    #for items in keys_deleted:
+    #    register_map[items] = K-1
 
-print register_map
+print "allocated map:", register_map
 
+def p1mapp0():
+    p1mp0 = {}
+    pass0_file= open ("pass0.txt" , 'r')
+    lines = pass0_file.read().split('\n')
+    w, h = 4, (len(lines) -1)
+    pass0 = [[0 for x in range(w)] for y in range(h)] 
+    for i in range(len(lines) -1):
+        chars = re.split('\t',lines[i])
+        for j in range(len(chars)-1):
+            pass0[i][j] = chars[j]
+    pass1_file= open ("pass1.txt" , 'r')
+    lines = pass1_file.read().split('\n')
+    w, h = 4, (len(lines) -1)
+    pass1 = [[0 for x in range(w)] for y in range(h)] 
+    for i in range(len(lines) -1):
+        chars = re.split('\t',lines[i])
+        for j in range(len(chars)-1):
+            pass1[i][j] = chars[j]
+    for i in range(len(pass1)):
+        for j in range(len(pass1[0])):
+            if(pass1[i][j] not in p1mp0):
+                p1mp0[pass1[i][j]] = pass0[i][j]
+    return p1mp0
+
+p1mp0 = p1mapp0()
 
 in_reg = list(set(uniques) - set(keys_deleted))
 
+with open('alloc_var.txt', 'w') as f:
+    f.write("allocated:%s\n" % in_reg)
+    f.write("spilled:%s\n" % keys_deleted)
 
+
+print uniques
+print "allocated:",in_reg
+print "spill:", keys_deleted
+
+
+loaded = []
+spill_res_flag = 0
 with open('pass3.txt', 'w') as f:
-    for pre_load in in_reg:
-        new_chars = 'r'+ str(register_map[pre_load])
-        f.write("load %s\t" % new_chars)
-        f.write("%s\n" % pre_load)
-    for item in global_file:
-        if(item[2] not in in_reg):
-            new_chars = 'r'+ str(register_map[item[2]])
-            f.write("load %s\t" % new_chars)
-            f.write("%s\n" % item[2])
-            in_reg.append(item[2])
-        if(item[3] not in in_reg):
-            new_chars = 'r'+ str(register_map[item[3]])
-            f.write("load %s\t" % new_chars)
-            f.write("%s\n" % item[3])
-            in_reg.append(item[3])
-        f.write("%s\t" % item[0])
-        new_chars = 'r'+ str(register_map[item[1]])
-        f.write("%s\t" % new_chars)
-        new_chars = 'r'+ str(register_map[item[2]])
-        f.write("%s\t" % new_chars)
-        new_chars = 'r'+ str(register_map[item[3]])
-        f.write("%s\t" % new_chars)
-        f.write("\n")
-        in_reg.append(item[1])
-        if(item[1] in keys_deleted):
-            new_chars = 'r'+ str(register_map[item[1]])
-            f.write("store %s\t" % new_chars)
-            f.write("%s\n" % item[1])
-            in_reg.remove(item[1])
-        if(item[2] in keys_deleted):
-            new_chars = 'r'+ str(register_map[item[2]])
-            f.write("store %s\t" % new_chars)
-            f.write("%s\n" % item[2])
-            in_reg.remove(item[2])
-        if(item[3] in keys_deleted):
-            new_chars = 'r'+ str(register_map[item[3]])
-            f.write("store %s\t" % new_chars)
-            f.write("%s\n" % item[3])
-            in_reg.remove(item[3])
+    for chars in global_file:
+        if((chars[2] in register_map) and (chars[2] not in loaded)):
+            f.write("load %s\t\t" % ('r'+str(register_map[chars[2]])))
+            f.write("%s\n" % chars[2])
+            loaded.append(chars[2])
+        if((chars[2] not in register_map) and (chars[2] not in loaded)):
+            f.write("load %s\t\t" % ('r'+str(K-1)))
+            f.write("%s\n" % chars[2])
+            loaded.append(chars[2])
+        if((chars[3] in register_map) and (chars[3] not in loaded)):
+            f.write("load %s\t\t" % ('r'+str(register_map[chars[3]])))
+            f.write("%s\n" % chars[3])
+            loaded.append(chars[3])
+        if((chars[3] not in register_map) and (chars[3] not in loaded)):
+            f.write("load %s\t\t" % ('r'+str(K-2)))
+            f.write("%s\n" % chars[3])
+            loaded.append(chars[3])
+        f.write("%s\t" % chars[0])
+        if(chars[1] in register_map):
+            new_char = 'r'+ str(register_map[chars[1]])
+        else:
+            spill_res_flag = 1
+            new_char = 'r'+str(K-1)
+        f.write("%s\t" % new_char)
+        if(chars[2] in register_map):
+            new_char = 'r'+ str(register_map[chars[2]])
+        else:
+            new_char = 'r'+str(K-1)
+        f.write("%s\t" % new_char)
+        if(chars[3] in register_map):
+            new_char = 'r'+ str(register_map[chars[3]])
+        else:
+            new_char = 'r'+str(K-2)
+        f.write("%s\n" % new_char)
+        #if(spill_res_flag == 1):
+        if(chars[1] not in register_map):
+            f.write("store %s\t" % ('r'+str(K-1)))
+            f.write("%s\n" % chars[1])
+        else:
+            f.write("store %s\t" % ('r'+str(register_map[chars[1]])))
+            f.write("%s\n" % chars[1])
+        spill_res_flag = 0
+        
 
+
+
+print p1mp0
+
+
+for key, value in p1mp0.iteritems():
+    s = open("pass3.txt").read()
+    s = s.replace(key, value)
+    f = open("pass3.txt", 'w')
+    f.write(s)
+    f.close()
+
+
+
+for key, value in p1mp0.iteritems():
+    s = open("alloc_var.txt").read()
+    s = s.replace(key, value)
+    f = open("alloc_var.txt", 'w')
+    f.write(s)
+    f.close()
 
 
 
