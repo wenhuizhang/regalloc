@@ -1,6 +1,0 @@
-Op	v1	v2	v2	
-Op	v3	v1	v4	
-Op	v51	v5	v5	
-Op	v7	v6	v3	
-Op	v101	v51	v51	
-Op	v54	v6	v4	
