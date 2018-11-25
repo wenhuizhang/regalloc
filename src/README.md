@@ -1,4 +1,4 @@
-# README File
+# Register Allocation
 
 Please put instructions in ***filename.txt***
 
