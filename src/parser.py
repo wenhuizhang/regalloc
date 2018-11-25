@@ -10,10 +10,21 @@ import numpy as np
 import os
 import string
 import fileinput
+from Queue import Queue
+import queue 
+
+
+K_file = open ('K.txt' , 'r')
+K = int(K_file.read().split('\n')[0])
+
+if(K <= 3):
+    print "K is too small"
+    sys.exit("K should be larger than 3!")
+
 
 text_file = open ( 'filename.txt' , 'r')
 lines = text_file.read().split('\n')
-print len(lines)
+#print len(lines)
 
 
 # Creates a list containing len(lines) -1  lists, each of 4 items, all set to 0
@@ -25,16 +36,59 @@ for i in range(len(lines) -1):
     chars = re.split(', | ',lines[i])
     global_file[i] = chars
 
+reg_queue = queue.Queue(maxsize=(K-1))
+for i in range(K-1):
+    reg_key = 'r'+ str(i)
+    reg_queue.put(reg_key)
+#print list(reg_queue.queue)
+
+mapped_reg = {}
+with open('pass5.txt', 'w') as f:
+    for i in range(len(global_file)):
+        if(global_file[i][2] not in mapped_reg):
+            x1 = reg_queue.get()
+            mapped_reg[global_file[i][2]] = x1
+            f.write("load %s\t\t" % x1)
+            f.write("%s \n" % global_file[i][2])
+        if(global_file[i][3] not in mapped_reg):
+            x2 = reg_queue.get()
+            mapped_reg[global_file[i][3]] = x2
+            f.write("load %s\t\t" % x2)
+            f.write("%s \n" % global_file[i][3])
+        x = 'r'+str(K-1)
+        mapped_reg[global_file[i][1]] = x
+        f.write("%s\t" % global_file[i][0])
+        f.write("%s\t" % mapped_reg[global_file[i][1]])
+        f.write("%s\t" % mapped_reg[global_file[i][2]])
+        f.write("%s\n" % mapped_reg[global_file[i][3]])
+        f.write("store %s\t" % ('r'+str(K-1)))
+        f.write("%s\n" %  global_file[i][1])
+        del mapped_reg[global_file[i][1]]
+        if(reg_queue.qsize() <= 2):
+            if(global_file[i][2] in mapped_reg):
+                f.write("store %s\t" % mapped_reg[global_file[i][2]])
+                f.write("%s\n" % global_file[i][2])
+                reg_queue.put(mapped_reg[global_file[i][2]])
+                del mapped_reg[global_file[i][2]]
+            if(global_file[i][3] in mapped_reg):
+                f.write("store %s\t" % mapped_reg[global_file[i][3]])
+                f.write("%s\n" % global_file[i][3])
+                reg_queue.put(mapped_reg[global_file[i][3]])
+                del mapped_reg[global_file[i][3]]
 
 
-
-print global_file
+#print global_file
 
 with open('pass0.txt', 'w') as f:
     for item in global_file:
         for chars in item:
             f.write("%s\t" % chars)
         f.write("\n")
+
+
+
+
+
 
 used_set = set()
 
@@ -69,7 +123,7 @@ for i in range(len(lines) -1):
                 global_file[j][3] = global_file[i][1]
     #print "for each change"
     #print global_file
-print global_file
+#print global_file
 
 
 with open('pass1.txt', 'w') as f:
@@ -88,7 +142,7 @@ with open('pass2.txt', 'w') as f:
 
 uniques = np.unique(global_file)
 uniques = np.delete(uniques, 0, 0)
-print uniques
+#print uniques
 
 live_dict = {}
 # for each unique var find its occurence line
@@ -101,7 +155,7 @@ for uniq in uniques:
     end = max(live_range)
     live_range = range(start+1, end+2)
     live_dict[uniq] = live_range
-print live_dict
+#print live_dict
 
 
 def intersection(lst1, lst2):
@@ -119,10 +173,10 @@ for i in range(len(uniques)):
         if(i == j):
             continue
         inter = intersection(live_dict[uniques[i]], live_dict[uniques[j]])
-        print uniques[i], uniques[j], inter
+        # print uniques[i], uniques[j], inter
         if(len(inter) != 0):
             graph[uniques[i]].append(uniques[j])
-print graph
+# print graph
 
 def color_nodes(graph, K):
   # Order nodes in descending degree
@@ -141,13 +195,6 @@ def color_nodes(graph, K):
         break
   return color_map
 
-K_file = open ( 'K.txt' , 'r')
-K = int(K_file.read().split('\n')[0])
-
-if(K <= 3):
-    print "K is too small"
-    sys.exit("K should be larger than 3!")
-print K
 
 
 def min_k(graph, uniques):
@@ -170,17 +217,18 @@ def degree_graph(graph, deg_num):
 
 register_map = {}
 
+keys_deleted = []
 if ( K>= min_k(graph, uniques) ):
     register_map = color_nodes(graph, K)
 else:
     new_graph, keys_deleted  = degree_graph(graph, min_k(graph, uniques)-K+2)
-    print keys_deleted # these ones alternatively use the Kth register for load and store
+    # print keys_deleted # these ones alternatively use the Kth register for load and store
     # print new_graph
     register_map = color_nodes(new_graph, K-2)
     #for items in keys_deleted:
     #    register_map[items] = K-1
 
-print "allocated map:", register_map
+# print "allocated map:", register_map
 
 def p1mapp0():
     p1mp0 = {}
@@ -215,9 +263,9 @@ with open('alloc_var.txt', 'w') as f:
     f.write("spilled:%s\n" % keys_deleted)
 
 
-print uniques
-print "allocated:",in_reg
-print "spill:", keys_deleted
+# print uniques
+# print "allocated:",in_reg
+# print "spill:", keys_deleted
 
 
 loaded = []
@@ -269,7 +317,7 @@ with open('pass3.txt', 'w') as f:
 
 
 
-print p1mp0
+# print p1mp0
 
 
 for key, value in p1mp0.iteritems():
@@ -287,7 +335,6 @@ for key, value in p1mp0.iteritems():
     f = open("alloc_var.txt", 'w')
     f.write(s)
     f.close()
-
 
 
 

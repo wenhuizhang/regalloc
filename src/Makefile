@@ -18,5 +18,5 @@ test:
 .PHONY: clean
 
 clean:
-	rm -f ./*.o regalloc main
+	rm -f  alloc_var.txt pass* ./*.o regalloc main
 
