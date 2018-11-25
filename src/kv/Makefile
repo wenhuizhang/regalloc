@@ -14,7 +14,7 @@ CC = gcc
 CFLAGS = -pthread -std=c99 -pedantic -Wall
 LDFLAGS =
 DEPS = hashtable.c linkedlist.c kv_store_ht_wrapper.c murmurhash.c
-TEST = test_ht_wrapper.c
+TEST = test_bottomup.c
 OBJS = kv_store
 TEST_BIN = test
 
